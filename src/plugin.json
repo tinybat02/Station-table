@@ -1,0 +1,25 @@
+{
+  "type": "panel",
+  "name": "Station Table",
+  "id": "id-stations-table",
+  "dataFormats": ["table"],
+  "info": {
+    "description": "Station Table",
+    "author": {
+      "name": "Nam Le"
+    },
+    "keywords": [],
+    "logos": {
+      "small": "img/table.svg",
+      "large": "img/table.svg"
+    },
+    "screenshots": [],
+    "version": "%VERSION%",
+    "updated": "%TODAY%"
+  },
+
+  "dependencies": {
+    "grafanaVersion": "6.3.x",
+    "plugins": []
+  }
+}
