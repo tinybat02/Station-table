@@ -5381,11 +5381,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../node_modules/tslib/tslib.es6.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _components_Table__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Table */ "./components/Table.tsx");
-/* harmony import */ var _style_main_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./style/main.css */ "./style/main.css");
-/* harmony import */ var _style_main_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_style_main_css__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _util_process__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./util/process */ "./util/process.ts");
+/* harmony import */ var _components_Table__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/Table */ "./components/Table.tsx");
+/* harmony import */ var _style_main_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./style/main.css */ "./style/main.css");
+/* harmony import */ var _style_main_css__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_style_main_css__WEBPACK_IMPORTED_MODULE_4__);
 
- // import { processData } from './util/process';
+
 
 
 
@@ -5398,20 +5399,58 @@ function (_super) {
   function MainPanel() {
     var _this = _super !== null && _super.apply(this, arguments) || this;
 
-    _this.state = {};
+    _this.state = {
+      data: [],
+      columns: []
+    };
     return _this;
   }
 
-  MainPanel.prototype.componentDidMount = function () {};
+  MainPanel.prototype.componentDidMount = function () {
+    var series = this.props.data.series;
+    if (series.length == 0) return;
+
+    var _a = Object(_util_process__WEBPACK_IMPORTED_MODULE_2__["processData"])(series, this.props.options.order),
+        data = _a.data,
+        columns = _a.columns;
+
+    this.setState({
+      data: data,
+      columns: columns
+    });
+  };
 
   MainPanel.prototype.componentDidUpdate = function (prevProps) {
-    if (prevProps.data.series !== this.props.data.series) {}
+    if (prevProps.data.series !== this.props.data.series) {
+      var series = this.props.data.series;
+
+      if (series.length == 0) {
+        this.setState({
+          data: [],
+          columns: []
+        });
+        return;
+      }
+
+      var _a = Object(_util_process__WEBPACK_IMPORTED_MODULE_2__["processData"])(series, this.props.options.order),
+          data = _a.data,
+          columns = _a.columns;
+
+      this.setState({
+        data: data,
+        columns: columns
+      });
+    }
   };
 
   MainPanel.prototype.render = function () {
     var _a = this.props,
         width = _a.width,
         height = _a.height;
+    var _b = this.state,
+        data = _b.data,
+        columns = _b.columns;
+    if (!data.length) return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, "No Data");
     return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
       style: {
         width: width,
@@ -5419,7 +5458,10 @@ function (_super) {
         overflowY: 'auto',
         padding: 10
       }
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_Table__WEBPACK_IMPORTED_MODULE_2__["Table"], null));
+    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_Table__WEBPACK_IMPORTED_MODULE_3__["Table"], {
+      data: data,
+      columns: columns
+    }));
   };
 
   return MainPanel;
@@ -5444,21 +5486,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_table__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-table */ "../node_modules/react-table/index.js");
 /* harmony import */ var react_table__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_table__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _data__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../data */ "./data.tsx");
 
 
+ // import { data, columns } from '../data';
 
+var Table = function Table(_a) {
+  var data = _a.data,
+      columns = _a.columns;
 
-var Table = function Table() {
-  var _a = Object(react_table__WEBPACK_IMPORTED_MODULE_2__["useTable"])({
-    columns: _data__WEBPACK_IMPORTED_MODULE_3__["columns"],
-    data: _data__WEBPACK_IMPORTED_MODULE_3__["data"]
+  var _b = Object(react_table__WEBPACK_IMPORTED_MODULE_2__["useTable"])({
+    columns: columns,
+    data: data
   }),
-      getTableProps = _a.getTableProps,
-      getTableBodyProps = _a.getTableBodyProps,
-      headerGroups = _a.headerGroups,
-      rows = _a.rows,
-      prepareRow = _a.prepareRow;
+      getTableProps = _b.getTableProps,
+      getTableBodyProps = _b.getTableBodyProps,
+      headerGroups = _b.headerGroups,
+      rows = _b.rows,
+      prepareRow = _b.prepareRow;
 
   return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("table", Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"])({
     className: "p-table"
@@ -5473,135 +5517,6 @@ var Table = function Table() {
     }));
   })));
 };
-
-/***/ }),
-
-/***/ "./data.tsx":
-/*!******************!*\
-  !*** ./data.tsx ***!
-  \******************/
-/*! exports provided: data, columns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "data", function() { return data; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "columns", function() { return columns; });
-var data = [{
-  lineNr: '21072',
-  in1: 12,
-  out1: 1,
-  in2: 21,
-  out2: 5,
-  in3: 2,
-  out3: 10,
-  in4: 1,
-  out4: 3,
-  in5: 6,
-  out5: 5,
-  in6: 8,
-  out6: 10
-}, {
-  lineNr: '21071',
-  in1: 12,
-  out1: 1,
-  in2: 21,
-  out2: 5,
-  in3: 2,
-  out3: 10,
-  in4: 1,
-  out4: 3,
-  in5: 6,
-  out5: 5,
-  in6: 8,
-  out6: 10
-}, {
-  lineNr: '21073',
-  in1: 12,
-  out1: 1,
-  in2: 21,
-  out2: 5,
-  in3: 2,
-  out3: 10,
-  in4: 1,
-  out4: 3,
-  in5: 6,
-  out5: 5,
-  in6: 8,
-  out6: 10
-}, {
-  lineNr: '21074',
-  in1: 12,
-  out1: 1,
-  in2: 21,
-  out2: 5,
-  in3: 2,
-  out3: 10,
-  in4: 1,
-  out4: 3,
-  in5: 6,
-  out5: 5,
-  in6: 8,
-  out6: 10
-}];
-var columns = [{
-  Header: 'Line Number',
-  accessor: 'lineNr'
-}, {
-  Header: 'Station A',
-  columns: [{
-    Header: 'In',
-    accessor: 'in1'
-  }, {
-    Header: 'Out',
-    accessor: 'out1'
-  }]
-}, {
-  Header: 'Station BCD',
-  columns: [{
-    Header: 'In',
-    accessor: 'in2'
-  }, {
-    Header: 'Out',
-    accessor: 'out2'
-  }]
-}, {
-  Header: 'Station EFG',
-  columns: [{
-    Header: 'In',
-    accessor: 'in3'
-  }, {
-    Header: 'Out',
-    accessor: 'out3'
-  }]
-}, {
-  Header: 'Station IKL',
-  columns: [{
-    Header: 'In',
-    accessor: 'in4'
-  }, {
-    Header: 'Out',
-    accessor: 'out4'
-  }]
-}, {
-  Header: 'Station OSD',
-  columns: [{
-    Header: 'In',
-    accessor: 'in5'
-  }, {
-    Header: 'Out',
-    accessor: 'out5'
-  }]
-}, {
-  Header: 'Station CGI',
-  columns: [{
-    Header: 'In',
-    accessor: 'in6'
-  }, {
-    Header: 'Out',
-    accessor: 'out6'
-  }]
-}];
 
 /***/ }),
 
@@ -5670,7 +5585,91 @@ module.exports = exported;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "defaults", function() { return defaults; });
-var defaults = {};
+var defaults = {
+  order: []
+};
+
+/***/ }),
+
+/***/ "./util/process.ts":
+/*!*************************!*\
+  !*** ./util/process.ts ***!
+  \*************************/
+/*! exports provided: processData */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "processData", function() { return processData; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../node_modules/tslib/tslib.es6.js");
+
+var processData = function processData(series, order) {
+  series.reverse();
+  var obj = {};
+  var stationObj = {};
+  series.map(function (serie) {
+    var sum = serie.fields[0].values.buffer.reduce(function (i, total) {
+      return i + total;
+    }, 0);
+    var raw_name = serie.name || '';
+    var combine_name = raw_name.startsWith('_') ? raw_name.substring(1) : raw_name;
+
+    var _a = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__read"])(combine_name.split(' '), 2),
+        line = _a[0],
+        station = _a[1];
+
+    if (!obj[line]) obj[line] = {
+      lineNr: line
+    };
+    if (!stationObj[station]) stationObj[station] = 1;
+
+    if (raw_name.startsWith('_')) {
+      obj[line][station + "_out"] = sum;
+    } else {
+      obj[line][station + "_in"] = sum;
+    }
+  });
+  var columns = [{
+    Header: 'Line Number',
+    accessor: 'lineNr'
+  }];
+
+  if (!order.length) {
+    Object.keys(stationObj).map(function (item) {
+      columns.push({
+        Header: item,
+        columns: [{
+          Header: 'In',
+          accessor: item + "_in"
+        }, {
+          Header: 'Out',
+          accessor: item + "_out"
+        }]
+      });
+    });
+    return {
+      data: Object.values(obj),
+      columns: columns
+    };
+  }
+
+  order.map(function (item) {
+    columns.push({
+      Header: item,
+      columns: [{
+        Header: 'In',
+        accessor: item + "_in"
+      }, {
+        Header: 'Out',
+        accessor: item + "_out"
+      }]
+    });
+  });
+  return {
+    data: Object.values(obj),
+    columns: columns
+  };
+};
 
 /***/ }),
 

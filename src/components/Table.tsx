@@ -1,8 +1,9 @@
 import React from 'react';
 import { useTable } from 'react-table';
-import { data, columns } from '../data';
+import { ColumnHeader } from '../types';
+// import { data, columns } from '../data';
 
-export const Table = () => {
+export const Table = ({ data, columns }: { data: { [key: string]: any }[]; columns: ColumnHeader[] }) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
     columns,
     data,
